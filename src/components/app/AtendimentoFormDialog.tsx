@@ -199,7 +199,7 @@ export function AtendimentoFormDialog({
             </div>
             <div>
               <Label>Tipo de jogo</Label>
-              <Input value={tipoJogo} onChange={(e) => setTipoJogo(e.target.value)} placeholder="Ex.: Cruz cigana" />
+              <Input value={tipoJogo} onChange={(e) => setTipoJogo(e.target.value)} placeholder="Mesa Real" />
             </div>
             <div>
               <Label>Tipo de atendimento</Label>
@@ -213,7 +213,7 @@ export function AtendimentoFormDialog({
             </div>
             <div className="col-span-2">
               <Label>Trabalho</Label>
-              <Input value={trabalho} onChange={(e) => setTrabalho(e.target.value)} />
+              <Textarea value={trabalho} onChange={(e) => setTrabalho(e.target.value)} rows={4} />
             </div>
             <div className="col-span-2">
               <Label>Observações</Label>
