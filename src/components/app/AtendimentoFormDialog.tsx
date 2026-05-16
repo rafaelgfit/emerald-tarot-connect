@@ -82,7 +82,7 @@ export function AtendimentoFormDialog({
 
     setLoading(true);
     try {
-      const conflict = await checkConflict(isoData, horaNorm, dur);
+      const conflict = await checkConflict(isoData!, horaNorm, dur);
       if (conflict) {
         toast.error("Conflito de agenda: já existe atendimento nesse horário");
         setLoading(false);
@@ -93,7 +93,7 @@ export function AtendimentoFormDialog({
       const { error } = await supabase.from("atendimentos").insert({
         user_id: userData.user!.id,
         consulente_id: consulenteId,
-        data_atendimento: isoData,
+        data_atendimento: isoData!,
         hora_atendimento: horaNorm,
         dia_semana: dia,
         duracao_minutos: dur,
