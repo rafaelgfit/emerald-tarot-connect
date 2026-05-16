@@ -18,6 +18,7 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedAtendimentosRouteImport } from './routes/_authenticated/atendimentos'
 import { Route as AuthenticatedConsulentesIndexRouteImport } from './routes/_authenticated/consulentes.index'
 import { Route as AuthenticatedConsulentesIdRouteImport } from './routes/_authenticated/consulentes.$id'
+import { Route as AuthenticatedAdminUsuariosRouteImport } from './routes/_authenticated/admin.usuarios'
 
 const PendingApprovalRoute = PendingApprovalRouteImport.update({
   id: '/pending-approval',
@@ -66,6 +67,12 @@ const AuthenticatedConsulentesIdRoute =
     path: '/consulentes/$id',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedAdminUsuariosRoute =
+  AuthenticatedAdminUsuariosRouteImport.update({
+    id: '/admin/usuarios',
+    path: '/admin/usuarios',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -74,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/atendimentos': typeof AuthenticatedAtendimentosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/lembretes': typeof AuthenticatedLembretesRoute
+  '/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/consulentes/$id': typeof AuthenticatedConsulentesIdRoute
   '/consulentes/': typeof AuthenticatedConsulentesIndexRoute
 }
@@ -84,6 +92,7 @@ export interface FileRoutesByTo {
   '/atendimentos': typeof AuthenticatedAtendimentosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/lembretes': typeof AuthenticatedLembretesRoute
+  '/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/consulentes/$id': typeof AuthenticatedConsulentesIdRoute
   '/consulentes': typeof AuthenticatedConsulentesIndexRoute
 }
@@ -96,6 +105,7 @@ export interface FileRoutesById {
   '/_authenticated/atendimentos': typeof AuthenticatedAtendimentosRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/lembretes': typeof AuthenticatedLembretesRoute
+  '/_authenticated/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/_authenticated/consulentes/$id': typeof AuthenticatedConsulentesIdRoute
   '/_authenticated/consulentes/': typeof AuthenticatedConsulentesIndexRoute
 }
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
     | '/atendimentos'
     | '/dashboard'
     | '/lembretes'
+    | '/admin/usuarios'
     | '/consulentes/$id'
     | '/consulentes/'
   fileRoutesByTo: FileRoutesByTo
@@ -118,6 +129,7 @@ export interface FileRouteTypes {
     | '/atendimentos'
     | '/dashboard'
     | '/lembretes'
+    | '/admin/usuarios'
     | '/consulentes/$id'
     | '/consulentes'
   id:
@@ -129,6 +141,7 @@ export interface FileRouteTypes {
     | '/_authenticated/atendimentos'
     | '/_authenticated/dashboard'
     | '/_authenticated/lembretes'
+    | '/_authenticated/admin/usuarios'
     | '/_authenticated/consulentes/$id'
     | '/_authenticated/consulentes/'
   fileRoutesById: FileRoutesById
@@ -205,6 +218,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedConsulentesIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/admin/usuarios': {
+      id: '/_authenticated/admin/usuarios'
+      path: '/admin/usuarios'
+      fullPath: '/admin/usuarios'
+      preLoaderRoute: typeof AuthenticatedAdminUsuariosRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
@@ -212,6 +232,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedAtendimentosRoute: typeof AuthenticatedAtendimentosRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedLembretesRoute: typeof AuthenticatedLembretesRoute
+  AuthenticatedAdminUsuariosRoute: typeof AuthenticatedAdminUsuariosRoute
   AuthenticatedConsulentesIdRoute: typeof AuthenticatedConsulentesIdRoute
   AuthenticatedConsulentesIndexRoute: typeof AuthenticatedConsulentesIndexRoute
 }
@@ -220,6 +241,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAtendimentosRoute: AuthenticatedAtendimentosRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedLembretesRoute: AuthenticatedLembretesRoute,
+  AuthenticatedAdminUsuariosRoute: AuthenticatedAdminUsuariosRoute,
   AuthenticatedConsulentesIdRoute: AuthenticatedConsulentesIdRoute,
   AuthenticatedConsulentesIndexRoute: AuthenticatedConsulentesIndexRoute,
 }
