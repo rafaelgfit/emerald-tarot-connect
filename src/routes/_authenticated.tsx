@@ -1,7 +1,8 @@
 import { createFileRoute, redirect, Outlet, Link, useNavigate, useLocation } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Users, Calendar, Bell, LogOut, Sparkles } from "lucide-react";
+import { LayoutDashboard, Users, Calendar, Bell, LogOut, Sparkles, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -9,6 +10,16 @@ export const Route = createFileRoute("/_authenticated")({
     const { data, error } = await supabase.auth.getUser();
     if (error || !data.user) {
       throw redirect({ to: "/login", search: { redirect: location.href } as never });
+    }
+    // Check approval
+    const userId = data.user.id;
+    const [{ data: roles }, { data: approval }] = await Promise.all([
+      supabase.from("user_roles").select("role").eq("user_id", userId),
+      supabase.from("account_approvals").select("status").eq("user_id", userId).maybeSingle(),
+    ]);
+    const isSuperadmin = (roles ?? []).some((r) => r.role === "superadmin");
+    if (!isSuperadmin && approval?.status !== "approved") {
+      throw redirect({ to: "/pending-approval" });
     }
   },
   component: AuthLayout,
@@ -24,6 +35,20 @@ const nav = [
 function AuthLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { data: isSuperadmin } = useQuery({
+    queryKey: ["is-superadmin"],
+    queryFn: async () => {
+      const { data: u } = await supabase.auth.getUser();
+      if (!u.user) return false;
+      const { data } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", u.user.id)
+        .eq("role", "superadmin");
+      return (data?.length ?? 0) > 0;
+    },
+  });
 
   const logout = async () => {
     await supabase.auth.signOut();
@@ -65,6 +90,20 @@ function AuthLayout() {
               </Link>
             );
           })}
+          {isSuperadmin && (
+            <Link
+              to="/admin/usuarios"
+              className={cn(
+                "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-colors",
+                location.pathname.startsWith("/admin")
+                  ? "bg-sidebar-accent text-sidebar-primary font-medium"
+                  : "hover:bg-sidebar-accent/60",
+              )}
+            >
+              <ShieldCheck className="size-4" />
+              Usuários
+            </Link>
+          )}
         </nav>
         <div className="p-3 border-t border-sidebar-border">
           <Button
