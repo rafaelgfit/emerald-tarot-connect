@@ -199,7 +199,7 @@ export function AtendimentoFormDialog({
             </div>
             <div>
               <Label>Tipo de jogo</Label>
-              <Input value={tipoJogo} onChange={(e) => setTipoJogo(e.target.value)} placeholder="Ex.: Cruz cigana" />
+              <Input value={tipoJogo} onChange={(e) => setTipoJogo(e.target.value)} placeholder="Mesa Real" />
             </div>
             <div>
               <Label>Tipo de atendimento</Label>
