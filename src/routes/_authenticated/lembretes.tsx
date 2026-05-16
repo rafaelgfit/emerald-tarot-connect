@@ -67,7 +67,10 @@ function Section({ titulo, itens, campo }: { titulo: string; itens: Item[]; camp
   const qc = useQueryClient();
   const marcar = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("atendimentos").update({ [campo]: true }).eq("id", id);
+      const payload = campo === "lembrete_semana_enviado"
+        ? { lembrete_semana_enviado: true }
+        : { lembrete_2dias_enviado: true };
+      const { error } = await supabase.from("atendimentos").update(payload).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
