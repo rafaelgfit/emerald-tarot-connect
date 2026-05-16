@@ -124,7 +124,7 @@ function ConsulenteDetail() {
       />
       <AtendimentoDetailDialog
         atendimentoId={selectedAtend}
-        onOpenChange={(v) => !v && setSelectedAtend(null)}
+        onOpenChange={(v: boolean) => !v && setSelectedAtend(null)}
       />
     </div>
   );
