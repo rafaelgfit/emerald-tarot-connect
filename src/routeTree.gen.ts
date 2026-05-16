@@ -16,6 +16,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedLembretesRouteImport } from './routes/_authenticated/lembretes'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAtendimentosRouteImport } from './routes/_authenticated/atendimentos'
+import { Route as AuthenticatedAgendamentosRouteImport } from './routes/_authenticated/agendamentos'
 import { Route as AuthenticatedConsulentesIndexRouteImport } from './routes/_authenticated/consulentes.index'
 import { Route as AuthenticatedConsulentesIdRouteImport } from './routes/_authenticated/consulentes.$id'
 import { Route as AuthenticatedAdminUsuariosRouteImport } from './routes/_authenticated/admin.usuarios'
@@ -55,6 +56,12 @@ const AuthenticatedAtendimentosRoute =
     path: '/atendimentos',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedAgendamentosRoute =
+  AuthenticatedAgendamentosRouteImport.update({
+    id: '/agendamentos',
+    path: '/agendamentos',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedConsulentesIndexRoute =
   AuthenticatedConsulentesIndexRouteImport.update({
     id: '/consulentes/',
@@ -78,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/pending-approval': typeof PendingApprovalRoute
+  '/agendamentos': typeof AuthenticatedAgendamentosRoute
   '/atendimentos': typeof AuthenticatedAtendimentosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/lembretes': typeof AuthenticatedLembretesRoute
@@ -89,6 +97,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/pending-approval': typeof PendingApprovalRoute
+  '/agendamentos': typeof AuthenticatedAgendamentosRoute
   '/atendimentos': typeof AuthenticatedAtendimentosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/lembretes': typeof AuthenticatedLembretesRoute
@@ -102,6 +111,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
   '/pending-approval': typeof PendingApprovalRoute
+  '/_authenticated/agendamentos': typeof AuthenticatedAgendamentosRoute
   '/_authenticated/atendimentos': typeof AuthenticatedAtendimentosRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/lembretes': typeof AuthenticatedLembretesRoute
@@ -115,6 +125,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/pending-approval'
+    | '/agendamentos'
     | '/atendimentos'
     | '/dashboard'
     | '/lembretes'
@@ -126,6 +137,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/pending-approval'
+    | '/agendamentos'
     | '/atendimentos'
     | '/dashboard'
     | '/lembretes'
@@ -138,6 +150,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/login'
     | '/pending-approval'
+    | '/_authenticated/agendamentos'
     | '/_authenticated/atendimentos'
     | '/_authenticated/dashboard'
     | '/_authenticated/lembretes'
@@ -204,6 +217,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAtendimentosRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/agendamentos': {
+      id: '/_authenticated/agendamentos'
+      path: '/agendamentos'
+      fullPath: '/agendamentos'
+      preLoaderRoute: typeof AuthenticatedAgendamentosRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/consulentes/': {
       id: '/_authenticated/consulentes/'
       path: '/consulentes'
@@ -229,6 +249,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedAgendamentosRoute: typeof AuthenticatedAgendamentosRoute
   AuthenticatedAtendimentosRoute: typeof AuthenticatedAtendimentosRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedLembretesRoute: typeof AuthenticatedLembretesRoute
@@ -238,6 +259,7 @@ interface AuthenticatedRouteChildren {
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAgendamentosRoute: AuthenticatedAgendamentosRoute,
   AuthenticatedAtendimentosRoute: AuthenticatedAtendimentosRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedLembretesRoute: AuthenticatedLembretesRoute,
