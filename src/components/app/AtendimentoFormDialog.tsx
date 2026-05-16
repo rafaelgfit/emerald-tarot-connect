@@ -153,7 +153,7 @@ export function AtendimentoFormDialog({
       .from("atendimentos")
       .update({ hora_retorno: horaNorm })
       .eq("consulente_id", consulenteId)
-      .eq("data_atendimento", isoData)
+      .eq("data_atendimento", isoData ?? "")
       .eq("hora_atendimento", normalizeTime(hora) ?? "");
     toast.success("Retorno agendado");
     setAskRetorno(false);
