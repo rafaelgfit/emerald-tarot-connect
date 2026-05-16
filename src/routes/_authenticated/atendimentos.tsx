@@ -2,28 +2,16 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Plus } from "lucide-react";
 import { isoDateToBr } from "@/lib/format";
-import { AtendimentoFormDialog } from "@/components/app/AtendimentoFormDialog";
-import { AtendimentoDetailDialog } from "@/components/app/AtendimentoDetailDialog";
+import { AtendimentoEditDialog } from "@/components/app/AtendimentoEditDialog";
 
 export const Route = createFileRoute("/_authenticated/atendimentos")({
   component: AtendimentosPage,
 });
 
 function AtendimentosPage() {
-  const [open, setOpen] = useState(false);
   const [sel, setSel] = useState<string | null>(null);
-
-  const { data: consulentes } = useQuery({
-    queryKey: ["consulentes-min"],
-    queryFn: async () => {
-      const { data } = await supabase.from("consulentes").select("id, nome").order("nome");
-      return data ?? [];
-    },
-  });
 
   const { data, refetch } = useQuery({
     queryKey: ["atendimentos-list"],
@@ -31,8 +19,8 @@ function AtendimentosPage() {
       const { data } = await supabase
         .from("atendimentos")
         .select("*, consulentes(nome)")
-        .order("data_atendimento", { ascending: false })
-        .order("hora_atendimento", { ascending: false });
+        .order("data_atendimento", { ascending: true })
+        .order("hora_atendimento", { ascending: true });
       return data ?? [];
     },
   });
@@ -42,11 +30,8 @@ function AtendimentosPage() {
       <header className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-serif">Atendimentos</h1>
-          <p className="text-muted-foreground mt-1">Agenda e histórico geral</p>
+          <p className="text-muted-foreground mt-1">Histórico geral — próximos no topo</p>
         </div>
-        <Button onClick={() => setOpen(true)}>
-          <Plus className="size-4 mr-2" /> Novo atendimento
-        </Button>
       </header>
 
       <Card className="overflow-hidden">
@@ -80,15 +65,10 @@ function AtendimentosPage() {
         )}
       </Card>
 
-      <AtendimentoFormDialog
-        open={open}
-        onOpenChange={setOpen}
-        consulentes={consulentes ?? []}
-        onSaved={refetch}
-      />
-      <AtendimentoDetailDialog
+      <AtendimentoEditDialog
         atendimentoId={sel}
         onOpenChange={(v: boolean) => !v && setSel(null)}
+        onSaved={refetch}
       />
     </div>
   );
