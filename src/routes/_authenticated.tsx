@@ -2,7 +2,7 @@ import { createFileRoute, redirect, Outlet, Link, useNavigate, useLocation } fro
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Users, Calendar, Bell, LogOut, Sparkles, ShieldCheck } from "lucide-react";
+import { LayoutDashboard, Users, Calendar, CalendarPlus, Bell, LogOut, Sparkles, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -28,6 +28,7 @@ export const Route = createFileRoute("/_authenticated")({
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/consulentes", label: "Consulentes", icon: Users },
+  { to: "/agendamentos", label: "Agendamentos", icon: CalendarPlus },
   { to: "/atendimentos", label: "Atendimentos", icon: Calendar },
   { to: "/lembretes", label: "Lembretes", icon: Bell },
 ] as const;
