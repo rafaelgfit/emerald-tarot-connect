@@ -213,7 +213,7 @@ export function AtendimentoFormDialog({
             </div>
             <div className="col-span-2">
               <Label>Trabalho</Label>
-              <Input value={trabalho} onChange={(e) => setTrabalho(e.target.value)} />
+              <Textarea value={trabalho} onChange={(e) => setTrabalho(e.target.value)} rows={4} />
             </div>
             <div className="col-span-2">
               <Label>Observações</Label>
