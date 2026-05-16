@@ -14,7 +14,110 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      atendimentos: {
+        Row: {
+          consulente_id: string
+          created_at: string
+          data_atendimento: string
+          data_retorno: string | null
+          dia_semana: string
+          duracao_minutos: number
+          hora_atendimento: string
+          hora_retorno: string | null
+          id: string
+          lembrete_2dias_enviado: boolean
+          lembrete_semana_enviado: boolean
+          observacoes: string | null
+          retorno: boolean
+          tipo_atendimento: string
+          tipo_jogo: string | null
+          trabalho: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          consulente_id: string
+          created_at?: string
+          data_atendimento: string
+          data_retorno?: string | null
+          dia_semana: string
+          duracao_minutos?: number
+          hora_atendimento: string
+          hora_retorno?: string | null
+          id?: string
+          lembrete_2dias_enviado?: boolean
+          lembrete_semana_enviado?: boolean
+          observacoes?: string | null
+          retorno?: boolean
+          tipo_atendimento?: string
+          tipo_jogo?: string | null
+          trabalho?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          consulente_id?: string
+          created_at?: string
+          data_atendimento?: string
+          data_retorno?: string | null
+          dia_semana?: string
+          duracao_minutos?: number
+          hora_atendimento?: string
+          hora_retorno?: string | null
+          id?: string
+          lembrete_2dias_enviado?: boolean
+          lembrete_semana_enviado?: boolean
+          observacoes?: string | null
+          retorno?: boolean
+          tipo_atendimento?: string
+          tipo_jogo?: string | null
+          trabalho?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "atendimentos_consulente_id_fkey"
+            columns: ["consulente_id"]
+            isOneToOne: false
+            referencedRelation: "consulentes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      consulentes: {
+        Row: {
+          created_at: string
+          data_nascimento: string | null
+          id: string
+          nome: string
+          signo: string | null
+          telefone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data_nascimento?: string | null
+          id?: string
+          nome: string
+          signo?: string | null
+          telefone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data_nascimento?: string | null
+          id?: string
+          nome?: string
+          signo?: string | null
+          telefone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
