@@ -2,8 +2,9 @@ import { createFileRoute, redirect, Outlet, Link, useNavigate, useLocation } fro
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Users, Calendar, CalendarPlus, Bell, LogOut, Sparkles, ShieldCheck } from "lucide-react";
+import { LayoutDashboard, Users, Calendar, CalendarPlus, Bell, LogOut, Sparkles, ShieldCheck, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { UserSettingsProvider } from "@/hooks/use-user-settings";
 
 export const Route = createFileRoute("/_authenticated")({
   beforeLoad: async ({ location }) => {
@@ -31,6 +32,7 @@ const nav = [
   { to: "/agendamentos", label: "Agendamentos", icon: CalendarPlus },
   { to: "/atendimentos", label: "Atendimentos", icon: Calendar },
   { to: "/lembretes", label: "Lembretes", icon: Bell },
+  { to: "/configuracoes", label: "Configurações", icon: Settings },
 ] as const;
 
 function AuthLayout() {
@@ -57,6 +59,7 @@ function AuthLayout() {
   };
 
   return (
+    <UserSettingsProvider>
     <div className="min-h-screen flex bg-background">
       <aside className="w-64 bg-sidebar text-sidebar-foreground flex flex-col shrink-0">
         <div className="p-6 flex items-center gap-3 border-b border-sidebar-border">
@@ -120,5 +123,6 @@ function AuthLayout() {
         <Outlet />
       </main>
     </div>
+    </UserSettingsProvider>
   );
 }
