@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { MessageCircle, Clock, Check } from "lucide-react";
 import { isoDateToBr, whatsappLink } from "@/lib/format";
 import { toast } from "sonner";
+import { useUserSettings, montarMensagem } from "@/hooks/use-user-settings";
 
 export const Route = createFileRoute("/_authenticated/lembretes")({
   component: LembretesPage,
@@ -18,11 +19,8 @@ function diffDias(iso: string) {
   return Math.round((target.getTime() - today.getTime()) / 86400000);
 }
 
-function montarMensagem(nome: string, isoDate: string, hora: string) {
-  return `Oi, ${nome}, tudo bem? Passando para lembrar você que seu atendimento será no dia ${isoDateToBr(isoDate)} às ${hora.slice(0, 5)}. Caso precise remarcar, nos envie uma mensagem.`;
-}
-
 function LembretesPage() {
+  const settings = useUserSettings();
   const { data } = useQuery({
     queryKey: ["lembretes"],
     queryFn: async () => {
@@ -43,12 +41,12 @@ function LembretesPage() {
       <header className="mb-6">
         <h1 className="text-3xl font-serif">Lembretes WhatsApp</h1>
         <p className="text-muted-foreground mt-1">
-          Atendimentos próximos a 1 semana e a 2 dias. Clique em "Enviar" para abrir o WhatsApp com a mensagem pronta e depois marque como enviado.
+          Atendimentos próximos a 1 semana e a 2 dias. Clique em "Abrir WhatsApp" para abrir a mensagem pronta e depois marque como enviado. Personalize o template em <strong>Configurações</strong>.
         </p>
       </header>
 
-      <Section titulo="Falta ~1 semana" itens={semana} campo="lembrete_semana_enviado" />
-      <Section titulo="Faltam ~2 dias" itens={doisDias} campo="lembrete_2dias_enviado" />
+      <Section titulo="Falta ~1 semana" itens={semana} campo="lembrete_semana_enviado" template={settings.mensagem_template} />
+      <Section titulo="Faltam ~2 dias" itens={doisDias} campo="lembrete_2dias_enviado" template={settings.mensagem_template} />
     </div>
   );
 }
@@ -63,7 +61,7 @@ type Item = {
   consulentes: { nome: string; telefone: string | null } | null;
 };
 
-function Section({ titulo, itens, campo }: { titulo: string; itens: Item[]; campo: "lembrete_semana_enviado" | "lembrete_2dias_enviado" }) {
+function Section({ titulo, itens, campo, template }: { titulo: string; itens: Item[]; campo: "lembrete_semana_enviado" | "lembrete_2dias_enviado"; template: string }) {
   const qc = useQueryClient();
   const marcar = useMutation({
     mutationFn: async (id: string) => {
@@ -91,7 +89,11 @@ function Section({ titulo, itens, campo }: { titulo: string; itens: Item[]; camp
           {itens.map((a) => {
             const nome = a.consulentes?.nome ?? "—";
             const tel = a.consulentes?.telefone;
-            const msg = montarMensagem(nome, a.data_atendimento, a.hora_atendimento);
+            const msg = montarMensagem(template, {
+              nome,
+              data: isoDateToBr(a.data_atendimento),
+              hora: a.hora_atendimento.slice(0, 5),
+            });
             return (
               <li key={a.id} className="py-3 flex items-center justify-between">
                 <div>
