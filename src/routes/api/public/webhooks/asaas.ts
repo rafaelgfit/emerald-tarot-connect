@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import type { TablesUpdate } from "@/integrations/supabase/types";
 
 type AsaasPayment = {
   id?: string;
@@ -67,7 +68,7 @@ export const Route = createFileRoute("/api/public/webhooks/asaas")({
           return new Response("ok", { status: 200 });
         }
 
-        const update: Record<string, unknown> = {
+        const update: TablesUpdate<"subscriptions"> = {
           last_payment_id: payment.id ?? null,
           last_payment_status: payment.status ?? null,
         };
