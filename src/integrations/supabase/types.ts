@@ -148,6 +148,60 @@ export type Database = {
         }
         Relationships: []
       }
+      subscriptions: {
+        Row: {
+          asaas_customer_id: string | null
+          asaas_subscription_id: string | null
+          created_at: string
+          current_period_end: string | null
+          id: string
+          last_payment_id: string | null
+          last_payment_status: string | null
+          reminder_1_sent: boolean
+          reminder_10_sent: boolean
+          reminder_5_sent: boolean
+          status: Database["public"]["Enums"]["subscription_status"]
+          trial_ends_at: string | null
+          trial_expired_sent: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          asaas_customer_id?: string | null
+          asaas_subscription_id?: string | null
+          created_at?: string
+          current_period_end?: string | null
+          id?: string
+          last_payment_id?: string | null
+          last_payment_status?: string | null
+          reminder_1_sent?: boolean
+          reminder_10_sent?: boolean
+          reminder_5_sent?: boolean
+          status?: Database["public"]["Enums"]["subscription_status"]
+          trial_ends_at?: string | null
+          trial_expired_sent?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          asaas_customer_id?: string | null
+          asaas_subscription_id?: string | null
+          created_at?: string
+          current_period_end?: string | null
+          id?: string
+          last_payment_id?: string | null
+          last_payment_status?: string | null
+          reminder_1_sent?: boolean
+          reminder_10_sent?: boolean
+          reminder_5_sent?: boolean
+          status?: Database["public"]["Enums"]["subscription_status"]
+          trial_ends_at?: string | null
+          trial_expired_sent?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -230,6 +284,12 @@ export type Database = {
     Enums: {
       app_role: "superadmin" | "user"
       approval_status: "pending" | "approved" | "rejected"
+      subscription_status:
+        | "trialing"
+        | "active"
+        | "past_due"
+        | "canceled"
+        | "expired"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -359,6 +419,13 @@ export const Constants = {
     Enums: {
       app_role: ["superadmin", "user"],
       approval_status: ["pending", "approved", "rejected"],
+      subscription_status: [
+        "trialing",
+        "active",
+        "past_due",
+        "canceled",
+        "expired",
+      ],
     },
   },
 } as const
