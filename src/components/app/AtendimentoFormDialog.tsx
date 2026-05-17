@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { maskDate, maskTime, brDateToIso, isoDateToBr, normalizeTime, diaDaSemana, buildDateTime, intervalosSobrepoem } from "@/lib/format";
+import { useUserSettings } from "@/hooks/use-user-settings";
 
 type Consulente = { id: string; nome: string };
 
@@ -29,7 +30,9 @@ export function AtendimentoFormDialog({
   const [consulenteId, setConsulenteId] = useState("");
   const [data, setData] = useState("");
   const [hora, setHora] = useState("");
-  const [duracao, setDuracao] = useState("60");
+  const settings = useUserSettings();
+  const defaultDur = String(settings.duracao_padrao_minutos ?? 60);
+  const [duracao, setDuracao] = useState(defaultDur);
   const [tipoJogo, setTipoJogo] = useState("");
   const [modalidade, setModalidade] = useState("presencial");
   const [trabalho, setTrabalho] = useState("");
@@ -44,11 +47,11 @@ export function AtendimentoFormDialog({
   useEffect(() => {
     if (open) {
       setConsulenteId(initialConsulenteId ?? "");
-      setData(""); setHora(""); setDuracao("60"); setTipoJogo("");
+      setData(""); setHora(""); setDuracao(defaultDur); setTipoJogo("");
       setModalidade("presencial"); setTrabalho(""); setObs("");
       setRetorno(false); setDataRetorno(""); setHoraRetornoInput("");
     }
-  }, [open, initialConsulenteId]);
+  }, [open, initialConsulenteId, defaultDur]);
 
   const isoData = brDateToIso(data);
   const dia = isoData ? diaDaSemana(isoData) : "";

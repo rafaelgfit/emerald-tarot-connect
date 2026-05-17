@@ -16,6 +16,7 @@ import {
   buildDateTime,
   intervalosSobrepoem,
 } from "@/lib/format";
+import { useUserSettings } from "@/hooks/use-user-settings";
 
 type Consulente = { id: string; nome: string };
 
@@ -33,7 +34,9 @@ export function AgendamentoFormDialog({
   const [consulenteId, setConsulenteId] = useState("");
   const [data, setData] = useState("");
   const [hora, setHora] = useState("");
-  const [duracao, setDuracao] = useState("60");
+  const settings = useUserSettings();
+  const defaultDur = String(settings.duracao_padrao_minutos ?? 60);
+  const [duracao, setDuracao] = useState(defaultDur);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -41,9 +44,9 @@ export function AgendamentoFormDialog({
       setConsulenteId("");
       setData("");
       setHora("");
-      setDuracao("60");
+      setDuracao(defaultDur);
     }
-  }, [open]);
+  }, [open, defaultDur]);
 
   const isoData = brDateToIso(data);
   const dia = isoData ? diaDaSemana(isoData) : "";

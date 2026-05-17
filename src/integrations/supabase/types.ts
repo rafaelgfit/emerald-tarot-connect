@@ -169,6 +169,51 @@ export type Database = {
         }
         Relationships: []
       }
+      user_settings: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          duracao_padrao_minutos: number
+          horario_fim: string | null
+          horario_inicio: string | null
+          mensagem_template: string
+          paleta: string
+          telefone: string | null
+          tema: string
+          updated_at: string
+          user_id: string
+          whatsapp_remetente: string | null
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          duracao_padrao_minutos?: number
+          horario_fim?: string | null
+          horario_inicio?: string | null
+          mensagem_template?: string
+          paleta?: string
+          telefone?: string | null
+          tema?: string
+          updated_at?: string
+          user_id: string
+          whatsapp_remetente?: string | null
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          duracao_padrao_minutos?: number
+          horario_fim?: string | null
+          horario_inicio?: string | null
+          mensagem_template?: string
+          paleta?: string
+          telefone?: string | null
+          tema?: string
+          updated_at?: string
+          user_id?: string
+          whatsapp_remetente?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
