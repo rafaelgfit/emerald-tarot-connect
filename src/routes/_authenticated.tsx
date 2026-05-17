@@ -2,7 +2,7 @@ import { createFileRoute, redirect, Outlet, Link, useNavigate, useLocation } fro
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Users, Calendar, CalendarPlus, Bell, LogOut, Sparkles, ShieldCheck, Settings } from "lucide-react";
+import { LayoutDashboard, Users, Calendar, CalendarPlus, Bell, LogOut, Sparkles, ShieldCheck, Settings, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { UserSettingsProvider } from "@/hooks/use-user-settings";
 
@@ -12,15 +12,36 @@ export const Route = createFileRoute("/_authenticated")({
     if (error || !data.user) {
       throw redirect({ to: "/login", search: { redirect: location.href } as never });
     }
-    // Check approval
     const userId = data.user.id;
-    const [{ data: roles }, { data: approval }] = await Promise.all([
+    const [{ data: roles }, { data: approval }, { data: sub }] = await Promise.all([
       supabase.from("user_roles").select("role").eq("user_id", userId),
       supabase.from("account_approvals").select("status").eq("user_id", userId).maybeSingle(),
+      supabase
+        .from("subscriptions")
+        .select("status, trial_ends_at")
+        .eq("user_id", userId)
+        .maybeSingle(),
     ]);
     const isSuperadmin = (roles ?? []).some((r) => r.role === "superadmin");
     if (!isSuperadmin && approval?.status !== "approved") {
       throw redirect({ to: "/pending-approval" });
+    }
+    // Subscription gate (superadmin bypasses)
+    if (!isSuperadmin) {
+      const onAssinatura = location.pathname.startsWith("/assinatura");
+      const trialExpired =
+        sub?.status === "trialing" &&
+        sub.trial_ends_at &&
+        new Date(sub.trial_ends_at).getTime() < Date.now();
+      const blocked =
+        !sub ||
+        sub.status === "expired" ||
+        sub.status === "canceled" ||
+        sub.status === "past_due" ||
+        trialExpired;
+      if (blocked && !onAssinatura) {
+        throw redirect({ to: "/assinatura" });
+      }
     }
   },
   component: AuthLayout,
@@ -33,6 +54,7 @@ const nav = [
   { to: "/atendimentos", label: "Atendimentos", icon: Calendar },
   { to: "/lembretes", label: "Lembretes", icon: Bell },
   { to: "/configuracoes", label: "Configurações", icon: Settings },
+  { to: "/assinatura", label: "Assinatura", icon: CreditCard },
 ] as const;
 
 function AuthLayout() {
