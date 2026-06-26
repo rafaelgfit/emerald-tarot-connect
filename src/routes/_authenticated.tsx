@@ -92,7 +92,7 @@ function AuthLayout() {
             <Sparkles className="size-5" />
           </div>
           <div>
-            <p className="font-serif text-lg leading-tight">Baralho Cigano</p>
+            <p className="font-serif text-lg leading-tight">Oráculo</p>
             <p className="text-xs opacity-70">Gestão de consultas</p>
           </div>
         </div>

@@ -68,7 +68,7 @@ function LoginPage() {
             <Sparkles className="size-7" />
           </div>
           <h1 className="text-2xl font-serif tracking-tight text-foreground">
-            Baralho Cigano
+            Oráculo
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
             {mode === "login" ? "Acesse sua agenda" : "Crie sua conta"}
