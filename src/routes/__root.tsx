@@ -75,17 +75,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Baralho Cigano — Gestão de Consulentes" },
+      { title: "SysOracle — Gestão de Consulentes" },
       {
         name: "description",
         content:
-          "Sistema de cadastro de consulentes e atendimentos de baralho cigano com agenda e lembretes.",
+          "Sistema de cadastro de consulentes e atendimentos de Oráculo com agenda e lembretes.",
       },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Baralho Cigano — Gestão de Consulentes" },
+      { property: "og:title", content: "SysOracle — Gestão de Consulentes" },
       {
         property: "og:description",
-        content: "Agenda e histórico de consultas de baralho cigano.",
+        content: "Agenda e histórico de consultas de Oráculo.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

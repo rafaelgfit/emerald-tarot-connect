@@ -5,7 +5,7 @@ import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 const ASAAS_BASE_URL = "https://api.asaas.com/v3";
 const PLAN_VALUE = 10.0;
-const PLAN_DESCRIPTION = "Assinatura mensal — Baralho Cigano";
+const PLAN_DESCRIPTION = "Assinatura mensal — SysOracle";
 
 async function asaasRequest(path: string, init: RequestInit = {}) {
   const apiKey = process.env.ASAAS_API_KEY;
