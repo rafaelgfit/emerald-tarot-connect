@@ -6,6 +6,8 @@ export interface SendEmailInput {
   html: string;
   text?: string;
   replyTo?: string;
+  userEmail?: string;
+  userName?: string;
 }
 
 export async function sendEmail(input: SendEmailInput) {
@@ -14,6 +16,13 @@ export async function sendEmail(input: SendEmailInput) {
   if (!apiKey) {
     throw new Error("RESEND_API_KEY não configurado");
   }
+  const replyTo =
+    input.replyTo ??
+    (input.userEmail
+      ? input.userName
+        ? `${input.userName} <${input.userEmail}>`
+        : input.userEmail
+      : undefined);
   const res = await fetch(RESEND_API_URL, {
     method: "POST",
     headers: {
@@ -26,7 +35,7 @@ export async function sendEmail(input: SendEmailInput) {
       subject: input.subject,
       html: input.html,
       text: input.text,
-      reply_to: input.replyTo,
+      reply_to: replyTo,
     }),
   });
   const body = await res.json().catch(() => null);
